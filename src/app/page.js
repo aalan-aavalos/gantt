@@ -1,49 +1,68 @@
 "use client";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { DateTime } from "luxon";
-//import { data } from "@/utils/data";
 import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-const datos = [
-  {
-    _id: "660f68de4063a651e3dd3382",
-    eNombre: "Alan Gamer",
-    eApeP: "Avalos",
-    eApeM: "Negrete",
-    eRol: "emp",
-    eEdad: 19,
-    eNumero: 1210301391,
-    eCorreo: "alangamer00185@gmail.com",
-    auSede: "GOB GTO",
-    uArea: "IMMS",
-    uTurno: "5d/2d15:00 / 23:00",
-    pwd: "$2a$12$T5LxJxDW.uswDUwh188tFOgcAgl8B43S/MZz.bbQAOLYtruClpAlC",
-    createdAt: "2024-04-05T02:58:38.140Z",
-    updatedAt: "2024-04-07T14:19:37.054Z",
-  },
-  {
-    _id: "660f69674063a651e3dd339d",
-    eNombre: "Alan de Jesus",
-    eApeP: "Avalos",
-    eApeM: "Negrete",
-    eRol: "adm",
-    eEdad: 19,
-    eNumero: 4281108561,
-    eCorreo: "avalosalan789@gmail.com",
-    auSede: "GOB GTO",
-    uArea: "",
-    uTurno: "N/A",
-    pwd: "$2a$12$wT97dBV4h8vuix/EqDNR7.mL9dJEZSqN3Kn15Kckwa8aOG6I4WvxK",
-    createdAt: "2024-04-05T03:00:55.178Z",
-    updatedAt: "2024-04-05T03:00:55.178Z",
-  },
-];
+// const datos = [
+//   {
+//     _id: "660f68de4063a651e3dd3382",
+//     eNombre: "Alan Gamer",
+//     eApeP: "Avalos",
+//     eApeM: "Negrete",
+//     eRol: "emp",
+//     eEdad: 19,
+//     eNumero: 1210301391,
+//     eCorreo: "alangamer00185@gmail.com",
+//     auSede: "GOB GTO",
+//     uArea: "IMMS",
+//     uTurno: "5d/2d15:00 / 23:00",
+//     pwd: "$2a$12$T5LxJxDW.uswDUwh188tFOgcAgl8B43S/MZz.bbQAOLYtruClpAlC",
+//     createdAt: "2024-04-05T02:58:38.140Z",
+//     updatedAt: "2024-04-07T14:19:37.054Z",
+//   },
+//   {
+//     _id: "660f69674063a651e3dd339d",
+//     eNombre: "Alan de Jesus",
+//     eApeP: "Avalos",
+//     eApeM: "Negrete",
+//     eRol: "adm",
+//     eEdad: 19,
+//     eNumero: 4281108561,
+//     eCorreo: "avalosalan789@gmail.com",
+//     auSede: "GOB GTO",
+//     uArea: "",
+//     uTurno: "N/A",
+//     pwd: "$2a$12$wT97dBV4h8vuix/EqDNR7.mL9dJEZSqN3Kn15Kckwa8aOG6I4WvxK",
+//     createdAt: "2024-04-05T03:00:55.178Z",
+//     updatedAt: "2024-04-05T03:00:55.178Z",
+//   },
+// ];
 
 export default function Home() {
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const respuesta = await fetch("/api/usrs");
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+        const datosJson = await respuesta.json();
+        setDatos(datosJson);
+        console.log(datos)
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    loadUsers();
+  }, []);
+
   // Funcion para inicializar la libreria
   async function initializeGSTC(element) {
     GSTC = (await import("gantt-schedule-timeline-calendar")).default;
@@ -207,10 +226,10 @@ export default function Home() {
       state,
     });
   }
-  
+
   const callback = useCallback((element) => {
     if (element) initializeGSTC(element);
-  }, []);
+  },);
 
   useEffect(() => {
     return () => {

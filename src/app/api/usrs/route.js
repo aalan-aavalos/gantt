@@ -13,7 +13,7 @@ export async function GET() {
 
 // Agregar usuarios
 export async function POST(req) {
-  // Falta agregar la encriptacion de la contraseña
+  // Falta agregar la encriptacion de la contrWaseña
   try {
     connectDB();
     const data = await req.json(); // Parsea los datos de la peticion
