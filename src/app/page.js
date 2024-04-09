@@ -43,24 +43,49 @@ let GSTC, gstc, state;
 // ];
 
 export default function Home() {
-  const [datos, setDatos] = useState([]);
+  const [datosUsrs, setDatosUsrs] = useState([]);
+  const [datosActivity, setatosActivity] = useState([]);
 
+  // Traer datos de usuario
   useEffect(() => {
-    const loadUsers = async () => {
+    const loadDataUsers = async () => {
       try {
-        const respuesta = await fetch("/api/usrs");
-        if (!respuesta.ok) {
+        const usersResponse = await fetch("/api/usrs");
+
+        if (!usersResponse.ok) {
           throw new Error("Error al obtener los datos");
         }
-        const datosJson = await respuesta.json();
-        setDatos(datosJson);
-        console.log(datos)
+
+        const usersData = await usersResponse.json();
+
+        setDatosUsrs(usersData);
       } catch (error) {
         console.error("Error:", error);
       }
     };
 
-    loadUsers();
+    loadDataUsers();
+  }, []);
+
+  // Traer datos de las actividades
+  useEffect(() => {
+    const loadDataActivity = async () => {
+      try {
+        const activityResponse = await fetch("/api/actividades");
+
+        if (!activityResponse.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+
+        const activityData = await activityResponse.json();
+
+        setatosActivity(activityData);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    loadDataActivity();
   }, []);
 
   // Funcion para inicializar la libreria
@@ -109,24 +134,6 @@ export default function Home() {
       },
     };
 
-    // Funcion para generar las filas
-    // function generateRows() {
-    //   /**
-    //    * @type { import("gantt-schedule-timeline-calendar").Rows }
-    //    */
-    //   const rows = {};
-    //   // Recorremos los datos de tu base de datos
-    //   datos.forEach((data) => {
-    //     const id = GSTC.api.GSTCID(data.eCorreo); // Utilizamos el _id como identificador de la fila
-    //     rows[id] = {
-    //       id,
-    //       label: data.eNombre, // Utilizamos el correo como label de la fila
-    //       // Puedes agregar más propiedades aquí según tus necesidades
-    //     };
-    //   });
-    //   return rows;
-    // }
-
     // Función para generar los items
     function generateRows() {
       /**
@@ -134,7 +141,7 @@ export default function Home() {
        */
       const rows = {};
 
-      datos.forEach((data) => {
+      datosUsrs.forEach((data) => {
         const id = GSTC.api.GSTCID(data.eCorreo); // Usamos eCorreo como identificador de la fila
         rows[id] = {
           id,
@@ -153,19 +160,25 @@ export default function Home() {
       const items = {};
       // @ts-ignore
 
-      datos.forEach((data, i) => {
-        let start = DateTime.fromISO(data.createdAt);
-        let end = DateTime.fromISO(data.updatedAt);
+      datosActivity.forEach((data, i) => {
+        // Convertir las fechas de MongoDB en objetos de fecha de JavaScript
+        let startDate = new Date(data.fechaI);
+        let endDate = new Date(data.fechaF);
+
+        // Convertir las fechas de JavaScript en objetos de fecha de Luxon
+        let luxonStartDate = DateTime.fromJSDate(startDate);
+        let luxonEndDate = DateTime.fromJSDate(endDate);
+
         const id = GSTC.api.GSTCID(i.toString());
-        const rowId = GSTC.api.GSTCID(data.eCorreo); // Usamos eCorreo como identificador de la fila
-        //start = start.add(1, "day");
+        const rowId = GSTC.api.GSTCID(data.eCorreo);
+
         items[id] = {
           id,
-          label: `Item ${i}`,
+          label: data.motivo,
           rowId,
           time: {
-            start: start.valueOf(),
-            end: end.valueOf(),
+            start: luxonStartDate.valueOf(),
+            end: luxonEndDate.valueOf(),
           },
         };
       });
@@ -229,7 +242,7 @@ export default function Home() {
 
   const callback = useCallback((element) => {
     if (element) initializeGSTC(element);
-  },);
+  });
 
   useEffect(() => {
     return () => {
