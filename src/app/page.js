@@ -494,8 +494,8 @@ export default function Home() {
 
   //Funcion para inicializar la libreria
 
-  const callback = (element) => {
-    if (element) initializeGSTC(element, datosUsrs1, datosActivity1);
+  const callback = async (element) => {
+    if (element) await initializeGSTC(element, datosUsrs1, datosActivity1);
   };
 
   useEffect(() => {
