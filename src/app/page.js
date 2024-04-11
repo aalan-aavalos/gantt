@@ -7,7 +7,7 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-// const datosUsrs = [
+// Aqui se deben de cargar los datos de la api de usrs yt actividades
 //   {
 //     _id: "66158e6958d56c54d51836e3",
 //     eNombre: "Alan de Jesus",
@@ -294,8 +294,8 @@ let GSTC, gstc, state;
 // ];
 
 export default function Home() {
-  const [datosUsrs, setDatosUsrs] = useState([]);
-  const [datosActivity, setDatosActivity] = useState([]);
+  const [datosUsrs1, setDatosUsrs] = useState([]);
+  const [datosActivity1, setDatosActivity] = useState([]);
 
   // Traer datos de usuario
   useEffect(() => {
@@ -339,7 +339,7 @@ export default function Home() {
     loadDataActivity();
   }, []);
 
-  async function initializeGSTC(element) {
+  async function initializeGSTC(element, datosUsrs, datosActivity) {
     GSTC = (await import("gantt-schedule-timeline-calendar")).default;
 
     // Plugin de linea del timepo
@@ -495,8 +495,8 @@ export default function Home() {
 
   //Funcion para inicializar la libreria
 
-  const callback = async (element) => {
-    if (element) await initializeGSTC(element);
+  const callback = (element) => {
+    if (element) initializeGSTC(element, datosUsrs1, datosActivity1);
   };
 
   useEffect(() => {
