@@ -7,40 +7,6 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-// const datos = [
-//   {
-//     _id: "660f68de4063a651e3dd3382",
-//     eNombre: "Alan Gamer",
-//     eApeP: "Avalos",
-//     eApeM: "Negrete",
-//     eRol: "emp",
-//     eEdad: 19,
-//     eNumero: 1210301391,
-//     eCorreo: "alangamer00185@gmail.com",
-//     auSede: "GOB GTO",
-//     uArea: "IMMS",
-//     uTurno: "5d/2d15:00 / 23:00",
-//     pwd: "$2a$12$T5LxJxDW.uswDUwh188tFOgcAgl8B43S/MZz.bbQAOLYtruClpAlC",
-//     createdAt: "2024-04-05T02:58:38.140Z",
-//     updatedAt: "2024-04-07T14:19:37.054Z",
-//   },
-//   {
-//     _id: "660f69674063a651e3dd339d",
-//     eNombre: "Alan de Jesus",
-//     eApeP: "Avalos",
-//     eApeM: "Negrete",
-//     eRol: "adm",
-//     eEdad: 19,
-//     eNumero: 4281108561,
-//     eCorreo: "avalosalan789@gmail.com",
-//     auSede: "GOB GTO",
-//     uArea: "",
-//     uTurno: "N/A",
-//     pwd: "$2a$12$wT97dBV4h8vuix/EqDNR7.mL9dJEZSqN3Kn15Kckwa8aOG6I4WvxK",
-//     createdAt: "2024-04-05T03:00:55.178Z",
-//     updatedAt: "2024-04-05T03:00:55.178Z",
-//   },
-// ];
 
 export default function Home() {
   const [datosUsrs, setDatosUsrs] = useState([]);
@@ -194,7 +160,10 @@ export default function Home() {
     const config = {
       // Licencia generada, esta debe especificar la url dond ese va especificar cuando se usa (PORT=3001)
       licenseKey:
-        "====BEGIN LICENSE KEY====\nn8dujOwD1BFeGNF4bMJsr+PykNPg1NJefLJ+xcj8sIEXuqYZG/V0XxbW0ynJThxD3REi3EATh/OD/lna5QHL77uAWPlBwnyM4yIw5WXnXtlORhAptvs48leGgG3LInHS6lLQ2VDQZGTJHPjM7ztSZYfFS+T3wThlofWmVlFvVDkhIXmfF4TYqoeck3spKP0Y27DxLqmQP5AELNE12cDySVzuS2a0D/2OnQ+s4zSX7REwi/X/C6OiUYxGqPbZ7vMHhUJ/8J/cqo3MC540OUjA1ea3W2Uoc3yucsz6WHQpkNcHOIgEfkVTu2peQYxoFNV07xyFFk0e3Hx4H3W/7u6b5w==||U2FsdGVkX1/DUN3VqpHv4oEzdor/lT/FMUPOKJCOMZEod3LwEEPlTG0baksfKMnBKwC2Nup6kLyXRRwBAMdzFMNQufBFemennh9J8L+BuhA=\nX5V1O0Mwp1wZBMx/TSgIRExgtHL2DW0XPUvQCxhGDjrvczTyaW6xHZ/TU/ph7/BAfUED7o8HE268KXxE08xlk/V/vR+h56auCtS0j4NnOaOG2VOe8Yl+FCKxto8+MpU0DcL9d8SUD7W1bNMTHej3LwX6d5uM9t7IFfg9513/iJ/GwHWLwIompsM5OR7+SvKfJM6+DdJ2pnJtAKo0PX80Bh87znmPR7yVJcZ6+RavrVc1h3yuAf7QzP1xGtdF3fhnd01T3cOa74w1EGdQIl0yntMLoDgwAuc1jtDfI9R1C8MnzaaD+tnKo9S18AVsSY8Pj3G4jE/iNU4CHI9PQigz7g==\n====END LICENSE KEY====",
+        // esta es la que funciona bien en 3000 y host
+        //"====BEGIN LICENSE KEY====\ncZ55O7rPbNDOyVUVvAERSUz3DOG6de5guknU4A2MdRES8fWIO/l+3CeLAVwTWhpqfrD4hi6uMd70ONgxxw5QpSijDMyet42cUgxtnbp4GaW9YwrAlPuoGILT93DzUs3bWumBL9Y1OlXiEVSgKBmAPWSPuNBBjz0bBBeYf2Cv2b+5bXMNr7fqQfybtubff2d4n1eyQxiDlIJkcj/fn492IkjJsBLi0EWHBgzD1KzjHKTS1WhvJ0Q/97PVFGi2HfvyYhqMpwoHRCZz1/UCeS7PZC5PgsV6YXUV7T2ronedpG/LMuXRFEoaBeVm5k4nCt18O0PGtZQxZLp0MmwOQZtJ+g==||U2FsdGVkX18GEtHZRyEr9mFMAbgWWOoYcOvzzquaHgguU58/DprZPdkOmI8y7TvZ5Qp6zAWm7NERhQ06GWxzSfQVxckupwyKKxQVzKyPmJc=\nKd01Nr88reSrXyJlsQ/OI8dKMlUJDXoc/9ti5pdx4WCNyyXCWBlWmTzbgOMyZ1YIK9QR1SC0R003HWlikG1f+x91ElgeZpJwJ5wNCMfvGsDf3MQTDEygPlKIAvM4RdIBzkGof2aek4EVIKEaqbu/L38AZyQSkv2QOVcvka1NhabiQGkillyRf33VgKSr8Z7Zfuvj7+VK2XduksL4mIsUqPXraIdTxLZp3IzIC9Cqs6axn/axtHjhw9vg0fGlYrD1aDMxJGg7ZDee7UVgFVybIYQWVg9VygXehudrzdsaDC+U3fJ0br8shYoSpdFqgFTRPBgv7F/i48tzxsbRkRrzjQ==\n====END LICENSE KEY===="
+        // esta funciona bien en 3001
+        "====BEGIN LICENSE KEY====\ncZ55O7rPbNDOyVUVvAERSUz3DOG6de5guknU4A2MdRES8fWIO/l+3CeLAVwTWhpqfrD4hi6uMd70ONgxxw5QpSijDMyet42cUgxtnbp4GaW9YwrAlPuoGILT93DzUs3bWumBL9Y1OlXiEVSgKBmAPWSPuNBBjz0bBBeYf2Cv2b+5bXMNr7fqQfybtubff2d4n1eyQxiDlIJkcj/fn492IkjJsBLi0EWHBgzD1KzjHKTS1WhvJ0Q/97PVFGi2HfvyYhqMpwoHRCZz1/UCeS7PZC5PgsV6YXUV7T2ronedpG/LMuXRFEoaBeVm5k4nCt18O0PGtZQxZLp0MmwOQZtJ+g==||U2FsdGVkX18GEtHZRyEr9mFMAbgWWOoYcOvzzquaHgguU58/DprZPdkOmI8y7TvZ5Qp6zAWm7NERhQ06GWxzSfQVxckupwyKKxQVzKyPmJc=\nKd01Nr88reSrXyJlsQ/OI8dKMlUJDXoc/9ti5pdx4WCNyyXCWBlWmTzbgOMyZ1YIK9QR1SC0R003HWlikG1f+x91ElgeZpJwJ5wNCMfvGsDf3MQTDEygPlKIAvM4RdIBzkGof2aek4EVIKEaqbu/L38AZyQSkv2QOVcvka1NhabiQGkillyRf33VgKSr8Z7Zfuvj7+VK2XduksL4mIsUqPXraIdTxLZp3IzIC9Cqs6axn/axtHjhw9vg0fGlYrD1aDMxJGg7ZDee7UVgFVybIYQWVg9VygXehudrzdsaDC+U3fJ0br8shYoSpdFqgFTRPBgv7F/i48tzxsbRkRrzjQ==\n====END LICENSE KEY====",
       // Plugins a utilizar ya importandos anteriormente
       plugins: [
         TimelinePointer(),
