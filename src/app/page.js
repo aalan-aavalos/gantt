@@ -7,7 +7,26 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-async function initializeGSTC(element, datosUsrs, datosActivity) {
+async function fetchDataUsrs() {
+  const responseUsrs = await fetch("/api/usrs");
+  const users = await responseUsrs.json();
+
+  return users;
+}
+
+async function fetchDataActivity() {
+  const responseActivity = await fetch("/api/actividades");
+  const activities = await responseActivity.json();
+
+  return activities;
+}
+
+// const datosUsrs = fetchDataUsrs();
+// const datosActivity = fetchDataActivity();
+
+//console.log(datosActivity, datosActivity);
+
+async function initializeGSTC(element) {
   GSTC = (await import("gantt-schedule-timeline-calendar")).default;
 
   // Plugin de linea del timepo
@@ -53,12 +72,12 @@ async function initializeGSTC(element, datosUsrs, datosActivity) {
   };
 
   // Función para generar los items
-  function generateRows() {
+  async function generateRows() {
     /**
      * @type { import("gantt-schedule-timeline-calendar").Rows }
      */
     const rows = {};
-
+    const datosUsrs = await fetchDataUsrs();
     datosUsrs.forEach((data) => {
       const id = GSTC.api.GSTCID(data.eCorreo); // Usamos eCorreo como identificador de la fila
       rows[id] = {
@@ -71,13 +90,13 @@ async function initializeGSTC(element, datosUsrs, datosActivity) {
   }
 
   // Funcion para generar los items utilizando datos de la base de datos
-  function generateItems() {
+  async function generateItems() {
     /**
      * @type { import("gantt-schedule-timeline-calendar").Items }
      */
     const items = {};
     // @ts-ignore
-
+    const datosActivity = await fetchDataActivity();
     datosActivity.forEach((data, i) => {
       // Convertir las fechas de MongoDB en objetos de fecha de JavaScript
       let startDate = new Date(data.fechaI);
@@ -447,56 +466,11 @@ async function initializeGSTC(element, datosUsrs, datosActivity) {
 // ];
 
 export default function Home() {
-  const [datosUsrs1, setDatosUsrs] = useState([]);
-  const [datosActivity1, setDatosActivity] = useState([]);
-
-  // Traer datos de usuario
-  useEffect(() => {
-    const loadDataUsers = async () => {
-      try {
-        const usersResponse = await fetch("/api/usrs");
-
-        if (!usersResponse.ok) {
-          throw new Error("Error al obtener los datos");
-        }
-
-        const usersData = await usersResponse.json();
-
-        setDatosUsrs(usersData);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    loadDataUsers();
-  }, []);
-
-  // Traer datos de las actividades
-  useEffect(() => {
-    const loadDataActivity = async () => {
-      try {
-        const activityResponse = await fetch("/api/actividades");
-
-        if (!activityResponse.ok) {
-          throw new Error("Error al obtener los datos");
-        }
-
-        const activityData = await activityResponse.json();
-
-        setDatosActivity(activityData);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    loadDataActivity();
-  }, []);
-
   //Funcion para inicializar la libreria
 
-  const callback = async (element) => {
-    if (element) await initializeGSTC(element, datosUsrs1, datosActivity1);
-  };
+  const callback = useCallback((element) => {
+    if (element) initializeGSTC(element);
+  }, []);
 
   useEffect(() => {
     return () => {
