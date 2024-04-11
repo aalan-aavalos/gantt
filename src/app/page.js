@@ -7,10 +7,10 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-
 export default function Home() {
   const [datosUsrs, setDatosUsrs] = useState([]);
-  const [datosActivity, setatosActivity] = useState([]);
+  const [datosActivity, setDatosActivity] = useState([]);
+  const [datosCargados, setDatosCargados] = useState(false);
 
   // Traer datos de usuario
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function Home() {
 
         const activityData = await activityResponse.json();
 
-        setatosActivity(activityData);
+        setDatosActivity(activityData);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -53,6 +53,21 @@ export default function Home() {
 
     loadDataActivity();
   }, []);
+
+  useEffect(() => {
+    // Verificar si los datos se han cargado completamente
+    if (datosUsrs.length > 0 && datosActivity.length > 0) {
+      setDatosCargados(true);
+    }
+  }, [datosUsrs, datosActivity]);
+
+  useEffect(() => {
+    // Inicializar GSTC cuando los datos estén cargados
+    if (datosCargados) {
+      const element = document.getElementById("gstc");
+      if (element) initializeGSTC(element);
+    }
+  }, [datosCargados]);
 
   // Funcion para inicializar la libreria
   async function initializeGSTC(element) {
