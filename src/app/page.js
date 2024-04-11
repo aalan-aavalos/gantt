@@ -7,26 +7,7 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-async function fetchDataUsrs() {
-  const responseUsrs = await fetch("/api/usrs");
-  const users = await responseUsrs.json();
-
-  return users;
-}
-
-async function fetchDataActivity() {
-  const responseActivity = await fetch("/api/actividades");
-  const activities = await responseActivity.json();
-
-  return activities;
-}
-
-// const datosUsrs = fetchDataUsrs();
-// const datosActivity = fetchDataActivity();
-
-//console.log(datosActivity, datosActivity);
-
-async function initializeGSTC(element) {
+async function initializeGSTC(element, rows, items) {
   GSTC = (await import("gantt-schedule-timeline-calendar")).default;
 
   // Plugin de linea del timepo
@@ -72,56 +53,57 @@ async function initializeGSTC(element) {
   };
 
   // Función para generar los items
-  async function generateRows() {
-    /**
-     * @type { import("gantt-schedule-timeline-calendar").Rows }
-     */
-    const rows = {};
-    const datosUsrs = await fetchDataUsrs();
-    datosUsrs.forEach((data) => {
-      const id = GSTC.api.GSTCID(data.eCorreo); // Usamos eCorreo como identificador de la fila
-      rows[id] = {
-        id,
-        label: `${data.eNombre} ${data.eApeP} ${data.eApeM}`, // Cambiar a la propiedad deseada para la etiqueta de la fila
-      };
-    });
+  // function generateRows() {
+  //   /**
+  //    * @type { import("gantt-schedule-timeline-calendar").Rows }
+  //    */
+  //   //const { users } = await fetchData();
 
-    return rows;
-  }
+  //   const rows = {};
+  //   users.forEach((data) => {
+  //     const id = GSTC.api.GSTCID(data.eCorreo); // Usamos eCorreo como identificador de la fila
+  //     rows[id] = {
+  //       id,
+  //       label: `${data.eNombre} ${data.eApeP} ${data.eApeM}`, // Cambiar a la propiedad deseada para la etiqueta de la fila
+  //     };
+  //   });
 
-  // Funcion para generar los items utilizando datos de la base de datos
-  async function generateItems() {
-    /**
-     * @type { import("gantt-schedule-timeline-calendar").Items }
-     */
-    const items = {};
-    // @ts-ignore
-    const datosActivity = await fetchDataActivity();
-    datosActivity.forEach((data, i) => {
-      // Convertir las fechas de MongoDB en objetos de fecha de JavaScript
-      let startDate = new Date(data.fechaI);
-      let endDate = new Date(data.fechaF);
+  //   return rows;
+  // }
 
-      // Convertir las fechas de JavaScript en objetos de fecha de Luxon
-      let luxonStartDate = DateTime.fromJSDate(startDate);
-      let luxonEndDate = DateTime.fromJSDate(endDate);
+  // // Funcion para generar los items utilizando datos de la base de datos
+  // function generateItems() {
+  //   /**
+  //    * @type { import("gantt-schedule-timeline-calendar").Items }
+  //    */
+  //   //const { activities } = await fetchData();
+  //   const items = {};
+  //   // @ts-ignore
+  //   activities.forEach((data, i) => {
+  //     // Convertir las fechas de MongoDB en objetos de fecha de JavaScript
+  //     let startDate = new Date(data.fechaI);
+  //     let endDate = new Date(data.fechaF);
 
-      const id = GSTC.api.GSTCID(i.toString());
-      const rowId = GSTC.api.GSTCID(data.eCorreo);
+  //     // Convertir las fechas de JavaScript en objetos de fecha de Luxon
+  //     let luxonStartDate = DateTime.fromJSDate(startDate);
+  //     let luxonEndDate = DateTime.fromJSDate(endDate);
 
-      items[id] = {
-        id,
-        label: data.motivo,
-        rowId,
-        time: {
-          start: luxonStartDate.valueOf(),
-          end: luxonEndDate.valueOf(),
-        },
-      };
-    });
+  //     const id = GSTC.api.GSTCID(i.toString());
+  //     const rowId = GSTC.api.GSTCID(data.eCorreo);
 
-    return items;
-  }
+  //     items[id] = {
+  //       id,
+  //       label: data.motivo,
+  //       rowId,
+  //       time: {
+  //         start: luxonStartDate.valueOf(),
+  //         end: luxonEndDate.valueOf(),
+  //       },
+  //     };
+  //   });
+
+  //   return items;
+  // }
 
   /**
    * Configuración de gantt-schedule-timeline-calendar
@@ -164,11 +146,11 @@ async function initializeGSTC(element) {
         },
       },
       // Filas a utilizar
-      rows: generateRows(),
+      rows: rows,
     },
     chart: {
       // Items generados
-      items: generateItems(),
+      items: items,
     },
   };
 
@@ -178,6 +160,16 @@ async function initializeGSTC(element) {
     element,
     state,
   });
+}
+
+async function fetchData() {
+  const responseUsrs = await fetch("/api/usrs");
+  const users = await responseUsrs.json();
+
+  const responseActivity = await fetch("/api/actividades");
+  const activities = await responseActivity.json();
+
+  return { users, activities };
 }
 // Aqui se deben de cargar los datos de la api de usrs yt actividades
 //   {
@@ -468,9 +460,61 @@ async function initializeGSTC(element) {
 export default function Home() {
   //Funcion para inicializar la libreria
 
-  const callback = useCallback((element) => {
-    if (element) initializeGSTC(element);
+  const [users, setUsers] = useState([]);
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      const { users, activities } = await fetchData();
+      setUsers(users);
+      setActivities(activities);
+    }
+    getData();
   }, []);
+
+  // Resto del código...
+
+  function generateRows(users) {
+    const rows = {};
+    users.forEach((data) => {
+      const id = GSTC.api.GSTCID(data.eCorreo);
+      rows[id] = {
+        id,
+        label: `${data.eNombre} ${data.eApeP} ${data.eApeM}`,
+      };
+    });
+    return rows;
+  }
+
+  function generateItems(activities) {
+    const items = {};
+    activities.forEach((data, i) => {
+      let startDate = new Date(data.fechaI);
+      let endDate = new Date(data.fechaF);
+      let luxonStartDate = DateTime.fromJSDate(startDate);
+      let luxonEndDate = DateTime.fromJSDate(endDate);
+      const id = GSTC.api.GSTCID(i.toString());
+      const rowId = GSTC.api.GSTCID(data.eCorreo);
+      items[id] = {
+        id,
+        label: data.motivo,
+        rowId,
+        time: {
+          start: luxonStartDate.valueOf(),
+          end: luxonEndDate.valueOf(),
+        },
+      };
+    });
+    return items;
+  }
+
+  const callback = useCallback(
+    (element) => {
+      if (element)
+        initializeGSTC(element, generateRows(users), generateItems(activities));
+    },
+    [users, activities]
+  );
 
   useEffect(() => {
     return () => {
