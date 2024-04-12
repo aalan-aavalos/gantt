@@ -7,6 +7,9 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
+// El problema es que no puedo traer datosUsrs y datosActivity de la peticion de la /api/usrs-actividades
+// Solo puedo hacerlo dentro del componente pero a la hora de mandarlo a produccion no se muestran los datos y da errores
+
 // Etos datos debe de llegar de una peticion /api/usrs-actividades
 const datosUsrs = [
   {
