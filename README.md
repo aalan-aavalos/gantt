@@ -1,36 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Info
+- Esta hecho con la libreria gantt-schedule-timeline-calendar
+- Link de la documentación: [Documentacion](https://gantt-schedule-timeline-calendar.neuronet.io/)
+- Link del ejemplo con Next de la documentacion: [Ejemplo](https://github.com/neuronetio/nextjs-gantt-schedule-timeline-calendar-example.git)
+- Todo esta en page.js y ya esta conectado a una base de datos en Mongo Atlas
 
-## Getting Started
+- Funcion que genera los objetos para los items de la gantt si el tipo es turnos
+![alt text](image-1.png)
+![alt text](image-2.png)
+- Aqui se usa
+![alt text](image-3.png)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Intalar
+- `npm install`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Ejecutar
+- `npm run dev`

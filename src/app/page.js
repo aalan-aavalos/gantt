@@ -392,7 +392,7 @@ async function initializeGSTC(element) {
       if (data.tipo === "turno") {
         const turnos = generarObjetos(data.eCorreo, data.turno);
 
-        // Aqui itera en los turnos que devuelve la funcion para agregarlo como items
+        // Aqui itera en los turnos que devuelve la funcion para agregarlo como itemsD
         turnos.forEach((turno, index) => {
           const id = GSTC.api.GSTCID((i + index).toString());
           const rowId = GSTC.api.GSTCID(turno.eCorreo);
