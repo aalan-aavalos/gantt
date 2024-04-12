@@ -7,7 +7,7 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-async function initializeGSTC(element, rows, items) {
+async function initializeGSTC(element, rowsG, itemsG) {
   GSTC = (await import("gantt-schedule-timeline-calendar")).default;
 
   // Plugin de linea del timepo
@@ -146,11 +146,11 @@ async function initializeGSTC(element, rows, items) {
         },
       },
       // Filas a utilizar
-      rows: rows,
+      rows: rowsG,
     },
     chart: {
       // Items generados
-      items: items,
+      items: itemsG,
     },
   };
 
@@ -508,13 +508,10 @@ export default function Home() {
     return items;
   }
 
-  const callback = useCallback(
-    (element) => {
-      if (element)
-        initializeGSTC(element, generateRows(users), generateItems(activities));
-    },
-    [users, activities]
-  );
+  const callback = async (element) => {
+    if (element)
+      await initializeGSTC(element, generateRows(users), generateItems(activities));
+  };
 
   useEffect(() => {
     return () => {
