@@ -7,7 +7,293 @@ import "gantt-schedule-timeline-calendar/dist/style.css";
 
 let GSTC, gstc, state;
 
-async function initializeGSTC(element, rowsG, itemsG) {
+const datosUsrs = [
+  {
+    _id: "66158e6958d56c54d51836e3",
+    eNombre: "Alan de Jesus",
+    eApeP: "Avalos",
+    eApeM: "Negrete",
+    eRol: "adm",
+    eEdad: 19,
+    eNumero: 4281108561,
+    eCorreo: "avalosalan789@gmail.com",
+    auSede: "N/A",
+    uArea: "N/A",
+    uTurno: "N/A",
+    pwd: "$2a$12$papFX3Omlaf0u5UdU9B5uu13ifZp03q2d1Io6hdPuCn9GGql1CP2y",
+    createdAt: "2024-04-09T18:52:25.858Z",
+    updatedAt: "2024-04-09T18:52:25.858Z",
+  },
+  {
+    _id: "6615924a58d56c54d5183740",
+    eNombre: "Alan",
+    eApeP: "Avalos",
+    eApeM: "Negrete",
+    eRol: "emp",
+    eEdad: 19,
+    eNumero: 1111111111,
+    eCorreo: "alangamer00185@gmail.com",
+    auSede: "Dolores",
+    uArea: "IMMS",
+    uTurno: "5d/2d7:00 / 15:00",
+    pwd: "$2a$12$dJJ3Xbs3shk73BxTiclfXOxnQuJPjEH5ajyoza/YBODOkqOLUNywq",
+    createdAt: "2024-04-09T19:08:58.269Z",
+    updatedAt: "2024-04-11T14:39:06.455Z",
+  },
+  {
+    _id: "66159e8c58d56c54d518377c",
+    eNombre: "Test",
+    eApeP: "Test",
+    eApeM: "Test",
+    eRol: "sAdm",
+    eEdad: 12,
+    eNumero: 1242313141,
+    eCorreo: "usuario@example.com",
+    auSede: "N/A",
+    uArea: "N/A",
+    uTurno: "N/A",
+    pwd: "$2a$12$U52viuE1pauIBvIgvcGUiuzUtMIymCV.8iwtNLJtmY9CzqOQm1QdG",
+    createdAt: "2024-04-09T20:01:16.950Z",
+    updatedAt: "2024-04-09T20:01:16.950Z",
+  },
+  {
+    _id: "66159ee358d56c54d518377e",
+    eNombre: "Test",
+    eApeP: "Test",
+    eApeM: "Test",
+    eRol: "adm",
+    eEdad: 23,
+    eNumero: 2242424242,
+    eCorreo: "usuarioadm@example.com",
+    auSede: "Dolores",
+    uArea: "",
+    uTurno: "N/A",
+    pwd: "$2a$12$sZ6SxrXsogGrfYP.Fs.1iOUL4r27pFx2ZmaD0v0WQRWTlLNAGpqSC",
+    createdAt: "2024-04-09T20:02:43.172Z",
+    updatedAt: "2024-04-09T20:02:43.172Z",
+  },
+  {
+    _id: "6615fcc3a18255d9320a2484",
+    eNombre: "Super Administrador",
+    eApeP: "N/A",
+    eApeM: "N/A",
+    eRol: "sAdm",
+    eEdad: 10,
+    eNumero: 1000000000,
+    eCorreo: "sadm@example.com",
+    auSede: "N/A",
+    uArea: "N/A",
+    uTurno: "N/A",
+    pwd: "$2a$12$kL5eEEM0i3DZEOk4azvRjeRw9RnXB9HLmM/eVx5FwrufN3IM.9FLy",
+    createdAt: "2024-04-10T02:43:15.096Z",
+    updatedAt: "2024-04-10T02:43:15.096Z",
+  },
+  {
+    _id: "6615fce7a18255d9320a2486",
+    eNombre: "Administrador",
+    eApeP: "N/A",
+    eApeM: "N/A",
+    eRol: "adm",
+    eEdad: 11,
+    eNumero: 1111111111,
+    eCorreo: "adm@example.com",
+    auSede: "Dolores",
+    uArea: "",
+    uTurno: "N/A",
+    pwd: "$2a$12$99f979JRJChabXl4AC6XoOtHGKib26nxJ2fFM2EaD83wrliQKwcVi",
+    createdAt: "2024-04-10T02:43:51.017Z",
+    updatedAt: "2024-04-10T02:43:51.017Z",
+  },
+  {
+    _id: "6615fcfea18255d9320a2488",
+    eNombre: "Karime Alejandra",
+    eApeP: "Cabellero",
+    eApeM: "Campos",
+    eRol: "emp",
+    eEdad: 11,
+    eNumero: 1111111111,
+    eCorreo: "karimec686@gmail.com",
+    auSede: "Dolores",
+    uArea: "IMMS",
+    uTurno: "5d/2d7:00 / 15:00",
+    pwd: "$2a$12$1dZEIXZlMfGkuzjmyBj3SO1eviMPANYHkkkBkMNUuv403FVCIuuhe",
+    createdAt: "2024-04-10T02:44:14.078Z",
+    updatedAt: "2024-04-10T20:20:02.026Z",
+  },
+];
+
+const datosActivity = [
+  {
+    _id: "661590ad58d56c54d5183717",
+    fechaI: "2024-04-10T00:00:00.000Z",
+    fechaF: "2024-04-13T00:00:00.000Z",
+    motivo: "Pruebas de funcionamiento 1",
+    Administradores: [],
+    Empleados: [],
+    estado: "Aprovada",
+    eCorreo: "avalosalan789@gmail.com",
+    tipo: "vacacion",
+    createdAt: "2024-04-09T19:02:05.965Z",
+    updatedAt: "2024-04-09T19:02:05.965Z",
+    __v: 0,
+  },
+  {
+    _id: "6615929f58d56c54d518374f",
+    nombre: "Test Training",
+    fechaI: "2024-04-08T00:00:00.000Z",
+    fechaF: "2024-04-23T00:00:00.000Z",
+    motivo: "Pruebas",
+    Administradores: ["Alan de Jesus Avalos"],
+    Empleados: ["Alan Avalos"],
+    eCorreo: "avalosalan789@gmail.com",
+    tipo: "training",
+    createdAt: "2024-04-09T19:10:23.233Z",
+    updatedAt: "2024-04-09T19:10:23.233Z",
+    __v: 0,
+  },
+  {
+    _id: "6615929f58d56c54d518374f",
+    nombre: "Test Training",
+    fechaI: "2024-04-08T00:00:00.000Z",
+    fechaF: "2024-04-23T00:00:00.000Z",
+    motivo: "Pruebas",
+    Administradores: ["Alan de Jesus Avalos"],
+    Empleados: ["Alan Avalos"],
+    eCorreo: "alangamer00185@gmail.com",
+    tipo: "training",
+    createdAt: "2024-04-09T19:10:23.233Z",
+    updatedAt: "2024-04-09T19:10:23.233Z",
+    __v: 0,
+  },
+  {
+    _id: "661598c5155e7594117d2559",
+    fechaI: "2024-04-24T00:00:00.000Z",
+    fechaF: "2024-04-19T00:00:00.000Z",
+    motivo: "Test desde el deploy",
+    Administradores: [],
+    Empleados: [],
+    estado: "Aprovada",
+    eCorreo: "alangamer00185@gmail.com",
+    tipo: "vacacion",
+    createdAt: "2024-04-09T19:36:37.255Z",
+    updatedAt: "2024-04-09T19:36:37.255Z",
+    __v: 0,
+  },
+  {
+    _id: "6615e9ca6a3ea6fb279b4522",
+    fechaI: "2024-04-10T00:00:00.000Z",
+    fechaF: "2024-04-26T00:00:00.000Z",
+    motivo: "Hola",
+    Administradores: [],
+    Empleados: [],
+    estado: "Aprovada",
+    eCorreo: "alangamer00185@gmail.com",
+    tipo: "vacacion",
+    createdAt: "2024-04-10T01:22:18.707Z",
+    updatedAt: "2024-04-10T01:22:18.707Z",
+    __v: 0,
+  },
+  {
+    _id: "6615f9348eb41acf28e9fd2e",
+    fechaI: "2024-04-17T00:00:00.000Z",
+    fechaF: "2024-04-18T00:00:00.000Z",
+    motivo: "12",
+    Administradores: [],
+    Empleados: [],
+    estado: "Aprovada",
+    eCorreo: "avalosalan789@gmail.com",
+    tipo: "vacacion",
+    createdAt: "2024-04-10T02:28:04.224Z",
+    updatedAt: "2024-04-10T02:28:04.224Z",
+    __v: 0,
+  },
+  {
+    _id: "66160810dd584f462a44c8e9",
+    nombre: "Entrenamiento de Seguridad",
+    fechaI: "2024-04-15T00:00:00.000Z",
+    fechaF: "2024-04-17T00:00:00.000Z",
+    motivo: "Capacitación en seguridad laboral",
+    Administradores: ["Alan de Jesus Avalos", "Test Test", "Administrador N/A"],
+    Empleados: ["Alan Avalos", "Karime Alejandra Cabellero"],
+    eCorreo: "avalosalan789@gmail.com",
+    tipo: "training",
+    createdAt: "2024-04-10T03:31:28.716Z",
+    updatedAt: "2024-04-10T03:31:28.716Z",
+    __v: 0,
+  },
+  {
+    _id: "66160810dd584f462a44c8e9",
+    nombre: "Entrenamiento de Seguridad",
+    fechaI: "2024-04-15T00:00:00.000Z",
+    fechaF: "2024-04-17T00:00:00.000Z",
+    motivo: "Capacitación en seguridad laboral",
+    Administradores: ["Alan de Jesus Avalos", "Test Test", "Administrador N/A"],
+    Empleados: ["Alan Avalos", "Karime Alejandra Cabellero"],
+    eCorreo: "alangamer00185@gmail.com",
+    tipo: "training",
+    createdAt: "2024-04-10T03:31:28.716Z",
+    updatedAt: "2024-04-10T03:31:28.716Z",
+    __v: 0,
+  },
+  {
+    _id: "66160810dd584f462a44c8e9",
+    nombre: "Entrenamiento de Seguridad",
+    fechaI: "2024-04-15T00:00:00.000Z",
+    fechaF: "2024-04-17T00:00:00.000Z",
+    motivo: "Capacitación en seguridad laboral",
+    Administradores: ["Alan de Jesus Avalos", "Test Test", "Administrador N/A"],
+    Empleados: ["Alan Avalos", "Karime Alejandra Cabellero"],
+    eCorreo: "usuario@example.com",
+    tipo: "training",
+    createdAt: "2024-04-10T03:31:28.716Z",
+    updatedAt: "2024-04-10T03:31:28.716Z",
+    __v: 0,
+  },
+  {
+    _id: "66160810dd584f462a44c8e9",
+    nombre: "Entrenamiento de Seguridad",
+    fechaI: "2024-04-15T00:00:00.000Z",
+    fechaF: "2024-04-17T00:00:00.000Z",
+    motivo: "Capacitación en seguridad laboral",
+    Administradores: ["Alan de Jesus Avalos", "Test Test", "Administrador N/A"],
+    Empleados: ["Alan Avalos", "Karime Alejandra Cabellero"],
+    eCorreo: "usuarioadm@example.com",
+    tipo: "training",
+    createdAt: "2024-04-10T03:31:28.716Z",
+    updatedAt: "2024-04-10T03:31:28.716Z",
+    __v: 0,
+  },
+  {
+    _id: "66160810dd584f462a44c8e9",
+    nombre: "Entrenamiento de Seguridad",
+    fechaI: "2024-04-15T00:00:00.000Z",
+    fechaF: "2024-04-17T00:00:00.000Z",
+    motivo: "Capacitación en seguridad laboral",
+    Administradores: ["Alan de Jesus Avalos", "Test Test", "Administrador N/A"],
+    Empleados: ["Alan Avalos", "Karime Alejandra Cabellero"],
+    eCorreo: "adm@example.com",
+    tipo: "training",
+    createdAt: "2024-04-10T03:31:28.716Z",
+    updatedAt: "2024-04-10T03:31:28.716Z",
+    __v: 0,
+  },
+  {
+    _id: "66160810dd584f462a44c8e9",
+    nombre: "Entrenamiento de Seguridad",
+    fechaI: "2024-04-15T00:00:00.000Z",
+    fechaF: "2024-04-17T00:00:00.000Z",
+    motivo: "Capacitación en seguridad laboral",
+    Administradores: ["Alan de Jesus Avalos", "Test Test", "Administrador N/A"],
+    Empleados: ["Alan Avalos", "Karime Alejandra Cabellero"],
+    eCorreo: "karimec686@gmail.com",
+    tipo: "training",
+    createdAt: "2024-04-10T03:31:28.716Z",
+    updatedAt: "2024-04-10T03:31:28.716Z",
+    __v: 0,
+  },
+];
+
+async function initializeGSTC(element) {
   GSTC = (await import("gantt-schedule-timeline-calendar")).default;
 
   // Plugin de linea del timepo
@@ -53,57 +339,56 @@ async function initializeGSTC(element, rowsG, itemsG) {
   };
 
   // Función para generar los items
-  // function generateRows() {
-  //   /**
-  //    * @type { import("gantt-schedule-timeline-calendar").Rows }
-  //    */
-  //   //const { users } = await fetchData();
+  function generateRows() {
+    /**
+     * @type { import("gantt-schedule-timeline-calendar").Rows }
+     */
+    const rows = {};
 
-  //   const rows = {};
-  //   users.forEach((data) => {
-  //     const id = GSTC.api.GSTCID(data.eCorreo); // Usamos eCorreo como identificador de la fila
-  //     rows[id] = {
-  //       id,
-  //       label: `${data.eNombre} ${data.eApeP} ${data.eApeM}`, // Cambiar a la propiedad deseada para la etiqueta de la fila
-  //     };
-  //   });
+    datosUsrs.forEach((data) => {
+      const id = GSTC.api.GSTCID(data.eCorreo); // Usamos eCorreo como identificador de la fila
+      rows[id] = {
+        id,
+        label: `${data.eNombre} ${data.eApeP} ${data.eApeM}`, // Cambiar a la propiedad deseada para la etiqueta de la fila
+      };
+    });
 
-  //   return rows;
-  // }
+    return rows;
+  }
 
-  // // Funcion para generar los items utilizando datos de la base de datos
-  // function generateItems() {
-  //   /**
-  //    * @type { import("gantt-schedule-timeline-calendar").Items }
-  //    */
-  //   //const { activities } = await fetchData();
-  //   const items = {};
-  //   // @ts-ignore
-  //   activities.forEach((data, i) => {
-  //     // Convertir las fechas de MongoDB en objetos de fecha de JavaScript
-  //     let startDate = new Date(data.fechaI);
-  //     let endDate = new Date(data.fechaF);
+  // Funcion para generar los items utilizando datos de la base de datos
+  function generateItems() {
+    /**
+     * @type { import("gantt-schedule-timeline-calendar").Items }
+     */
+    const items = {};
+    // @ts-ignore
 
-  //     // Convertir las fechas de JavaScript en objetos de fecha de Luxon
-  //     let luxonStartDate = DateTime.fromJSDate(startDate);
-  //     let luxonEndDate = DateTime.fromJSDate(endDate);
+    datosActivity.forEach((data, i) => {
+      // Convertir las fechas de MongoDB en objetos de fecha de JavaScript
+      let startDate = new Date(data.fechaI);
+      let endDate = new Date(data.fechaF);
 
-  //     const id = GSTC.api.GSTCID(i.toString());
-  //     const rowId = GSTC.api.GSTCID(data.eCorreo);
+      // Convertir las fechas de JavaScript en objetos de fecha de Luxon
+      let luxonStartDate = DateTime.fromJSDate(startDate);
+      let luxonEndDate = DateTime.fromJSDate(endDate);
 
-  //     items[id] = {
-  //       id,
-  //       label: data.motivo,
-  //       rowId,
-  //       time: {
-  //         start: luxonStartDate.valueOf(),
-  //         end: luxonEndDate.valueOf(),
-  //       },
-  //     };
-  //   });
+      const id = GSTC.api.GSTCID(i.toString());
+      const rowId = GSTC.api.GSTCID(data.eCorreo);
 
-  //   return items;
-  // }
+      items[id] = {
+        id,
+        label: data.motivo,
+        rowId,
+        time: {
+          start: luxonStartDate.valueOf(),
+          end: luxonEndDate.valueOf(),
+        },
+      };
+    });
+
+    return items;
+  }
 
   /**
    * Configuración de gantt-schedule-timeline-calendar
@@ -120,7 +405,7 @@ async function initializeGSTC(element, rowsG, itemsG) {
     // Plugins a utilizar ya importandos anteriormente
     plugins: [
       TimelinePointer(),
-      Selection(),
+      // Selection(),
       //ItemMovement(itemMovementOptions), // Se agrega la configuracion creada
     ],
     list: {
@@ -146,11 +431,11 @@ async function initializeGSTC(element, rowsG, itemsG) {
         },
       },
       // Filas a utilizar
-      rows: rowsG,
+      rows: generateRows(),
     },
     chart: {
       // Items generados
-      items: itemsG,
+      items: generateItems(),
     },
   };
 
@@ -161,17 +446,7 @@ async function initializeGSTC(element, rowsG, itemsG) {
     state,
   });
 }
-
-async function fetchData() {
-  const responseUsrs = await fetch("/api/usrs");
-  const users = await responseUsrs.json();
-
-  const responseActivity = await fetch("/api/actividades");
-  const activities = await responseActivity.json();
-
-  return { users, activities };
-}
-// Aqui se deben de cargar los datos de la api de usrs yt actividades
+// Aqui se deben de cargar los datos de la api de usrs y actividades
 //   {
 //     _id: "66158e6958d56c54d51836e3",
 //     eNombre: "Alan de Jesus",
@@ -460,57 +735,8 @@ async function fetchData() {
 export default function Home() {
   //Funcion para inicializar la libreria
 
-  const [users, setUsers] = useState([]);
-  const [activities, setActivities] = useState([]);
-
-  useEffect(() => {
-    async function getData() {
-      const { users, activities } = await fetchData();
-      setUsers(users);
-      setActivities(activities);
-    }
-    getData();
-  }, []);
-
-  // Resto del código...
-
-  function generateRows(users) {
-    const rows = {};
-    users.forEach((data) => {
-      const id = GSTC.api.GSTCID(data.eCorreo);
-      rows[id] = {
-        id,
-        label: `${data.eNombre} ${data.eApeP} ${data.eApeM}`,
-      };
-    });
-    return rows;
-  }
-
-  function generateItems(activities) {
-    const items = {};
-    activities.forEach((data, i) => {
-      let startDate = new Date(data.fechaI);
-      let endDate = new Date(data.fechaF);
-      let luxonStartDate = DateTime.fromJSDate(startDate);
-      let luxonEndDate = DateTime.fromJSDate(endDate);
-      const id = GSTC.api.GSTCID(i.toString());
-      const rowId = GSTC.api.GSTCID(data.eCorreo);
-      items[id] = {
-        id,
-        label: data.motivo,
-        rowId,
-        time: {
-          start: luxonStartDate.valueOf(),
-          end: luxonEndDate.valueOf(),
-        },
-      };
-    });
-    return items;
-  }
-
   const callback = async (element) => {
-    if (element)
-      await initializeGSTC(element, generateRows(users), generateItems(activities));
+    if (element) await initializeGSTC(element);
   };
 
   useEffect(() => {
