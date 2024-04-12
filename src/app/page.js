@@ -293,6 +293,8 @@ const datosActivity = [
   },
 ];
 
+//aa
+
 async function initializeGSTC(element) {
   GSTC = (await import("gantt-schedule-timeline-calendar")).default;
 
@@ -405,7 +407,7 @@ async function initializeGSTC(element) {
     // Plugins a utilizar ya importandos anteriormente
     plugins: [
       TimelinePointer(),
-      // Selection(),
+      //Selection(),
       //ItemMovement(itemMovementOptions), // Se agrega la configuracion creada
     ],
     list: {
